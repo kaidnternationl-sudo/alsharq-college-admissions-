@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عمادة القبول والتسجيل</title>
+    <style>
+        /* التنسيقات العامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: white;
+            min-height: 100vh;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        /* شريط الرأس */
+        .header {
+            background-color: #1a535c;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+        }
+        
+        .menu-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        /* القائمة الجانبية */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 250px;
+            height: 100%;
+            background-color: #8b7355;
+            color: white;
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+        }
+        
+        .side-menu.active {
+            right: 0;
+        }
+        
+        .side-menu h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .menu-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .menu-item:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        /* الروابط */
+        .link-item {
+            display: block;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.2s;
+            position: relative;
+        }
+        
+        .link-item:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .link-item::after {
+            content: "▶";
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+        }
+        
+        /* النماذج */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .required::after {
+            content: "*";
+            color: red;
+            margin-right: 5px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-group input {
+            margin-left: 10px;
+            margin-top: 3px;
+        }
+        
+        /* الأزرار */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-confirm {
+            background-color: #2c3e50;
+            color: white;
+        }
+        
+        .btn-back {
+            background-color: #8b7355;
+            color: white;
+        }
+        
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        /* تعليمات صغيرة */
+        .small-link {
+            font-size: 12px;
+            color: #1a535c;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        /* إخفاء العناصر */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- القائمة الجانبية -->
+    <div class="overlay" id="overlay"></div>
+    <div class="side-menu" id="sideMenu">
+        <h2>الفصل الأول 1447هـ</h2>
+        <div class="menu-item" onclick="navigateTo('login')">القبول</div>
+        <div class="menu-item">المحكمين</div>
+        <div class="menu-item">أكاديمي</div>
+        <div class="menu-item">إدخال الطلبات</div>
+        <div class="menu-item">التحقق من الوثائق</div>
+        <div class="menu-item">توظيف</div>
+    </div>
+
+    <!-- الصفحة الرئيسية للخدمات -->
+    <div class="container" id="homePage">
+        <div class="header">
+            <div class="menu-icon" onclick="toggleSideMenu()">☰</div>
+            <h1>عمادة القبول والتسجيل</h1>
+            <p>الصفحة الرئيسية للخدمات</p>
+            <p>1447/1448 - الفصل الثاني</p>
+        </div>
+        
+        <a href="#" class="link-item" onclick="navigateTo('bridgingForm')">تقديم طلب تجسير (بكالوريوس تكميلي)</a>
+        <a href="#" class="link-item">طباعة طلب التجسير (بكالوريوس تكميلي)</a>
+        <a href="#" class="link-item">خدمة دفع الرسوم</a>
+        <a href="#" class="link-item">الدفع الإلكتروني للمتقدم</a>
+        
+        <div class="btn-group">
+            <button class="btn btn-back" onclick="navigateTo('login')">رجوع</button>
+        </div>
+    </div>
+
+    <!-- شاشة الدخول -->
+    <div class="container hidden" id="loginPage">
+        <div class="header">
+            <h1>الفصل الأول 1447هـ</h1>
+        </div>
+        
+        <div class="form-group">
+            <label for="degree">الدرجة</label>
+            <select id="degree" class="form-control">
+                <option value="">-- اختر الدرجة --</option>
+                <option value="bachelor">بكالوريوس</option>
+                <option value="master">ماجستير</option>
+                <option value="phd">دكتوراه</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="civilId">السجل المدني</label>
+            <input type="text" id="civilId" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">كلمة السر</label>
+            <input type="password" id="password" class="form-control">
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
+            <button class="btn btn-confirm" onclick="navigateTo('bridgingForm')">تأكيد</button>
+        </div>
+    </div>
+
+    <!-- نموذج طلب تجسير -->
+    <div class="container hidden" id="bridgingFormPage">
+        <div class="header">
+            <h1>تقديم طلب تجسير</h1>
+            <p>الحقول التي تبدأ بنجمة حمراء (*) هي حقول إجبارية.</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="civilIdForm" class="required">السجل المدني</label>
+            <input type="text" id="civilIdForm" class="form-control">
+            <span class="small-link">تعليمات</span>
+        </div>
+        
+        <div class="form-group">
+            <label for="email" class="required">البريد الإلكتروني</label>
+            <input type="email" id="email" class="form-control">
+        </div>
+        
+        <div class="checkbox-group">
+            <input type="checkbox" id="readInstructions">
+            <label for="readInstructions">يوضح علامة على المربع تكون قد قرأت ملف التعليمات بشكل واضح حيث فيه الكثير من المعلومات المهمة</label>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
+            <button class="btn btn-confirm">تأكيد</button>
+        </div>
+    </div>
+
+    <script>
+        // وظائف التنقل بين الصفحات
+        function navigateTo(page) {
+            // إخفاء جميع الصفحات
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('bridgingFormPage').classList.add('hidden');
+            
+            // إظهار الصفحة المطلوبة
+            if (page === 'home') {
+                document.getElementById('homePage').classList.remove('hidden');
+            } else if (page === 'login') {
+                document.getElementById('loginPage').classList.remove('hidden');
+            } else if (page === 'bridgingForm') {
+                document.getElementById('bridgingFormPage').classList.remove('hidden');
+            }
+            
+            // إغلاق القائمة الجانبية إذا كانت مفتوحة
+            closeSideMenu();
+        }
+        
+        // وظائف القائمة الجانبية
+        function toggleSideMenu() {
+            document.getElementById('sideMenu').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+        
+        function closeSideMenu() {
+            document.getElementById('sideMenu').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+        
+        // إغلاق القائمة الجانبية عند النقر على الخلفية
+        document.getElementById('overlay').addEventListener('click', closeSideMenu);
+    </script>
+</body>
+</html>

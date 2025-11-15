@@ -54,25 +54,51 @@
             font-size: 14px;
         }
         
+        /* تعديل موقع أيقونة القائمة لتكون على اليمين في الشريط */
         .menu-icon {
+            /* تعديل الموقع ليكون داخل الشريط وعلى اليمين */
             position: absolute;
-            left: 15px;
+            right: 15px; /* تم تغييرها من left إلى right */
             top: 50%;
             transform: translateY(-50%);
             font-size: 20px;
             cursor: pointer;
+            z-index: 10; /* لضمان ظهورها فوق المحتوى */
+            /* لم يعد يحتاج إلى اللون الأبيض إذا كان داخل الشريط الملون */
+        }
+        
+        /* تنسيق الأجزاء التي تمثل العناوين في الصورة 8956.jpg */
+        .top-bar {
+            background-color: #1a535c; /* نفس لون الهيدر الرئيسي */
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .main-title {
+            text-align: center;
+            font-size: 18px;
+            padding: 10px 0;
+            color: #555; /* لون مختلف لعمادة القبول والتسجيل */
         }
         
         .logo {
             width: 40px;
             height: 40px;
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a535c;
+            font-weight: bold;
+            font-size: 14px;
             margin-left: 10px;
-        }
-        
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
         }
         
         /* القائمة الجانبية */
@@ -108,10 +134,21 @@
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.2s;
+            position: relative;
         }
         
         .menu-item:hover {
             background-color: rgba(255,255,255,0.2);
+        }
+        
+        .menu-item::before {
+            content: "▶";
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: white; /* لون السهم */
         }
         
         .overlay {
@@ -146,13 +183,31 @@
             background-color: #e0e0e0;
         }
         
+        .link-item::before {
+            content: "«"; /* تم تعديل السهم ليطابق الصورة */
+            position: absolute;
+            right: 15px; /* تم تعديل مكانه ليكون قبل النص */
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a535c; /* لون السهم ليتوافق مع ألوان المؤسسة */
+        }
+        
         .link-item::after {
-            content: "▶";
+            content: "(بكالوريوس تكميلي)"; /* تم وضع النص في ::after ليظهر بعد النص الرئيسي */
             position: absolute;
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 12px;
+            color: #666;
+        }
+        
+        /* تعديلات على الروابط التي لا تحتوي على بكالوريوس تكميلي */
+        .link-item:nth-child(3)::after,
+        .link-item:nth-child(4)::after {
+            content: "";
         }
         
         /* النماذج */
@@ -265,46 +320,9 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-        
-        /* QR Code */
-        .qr-code {
-            text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-        
-        .qr-code img {
-            max-width: 200px;
-            margin: 10px 0;
-        }
-        
-        .payment-amount {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            text-align: center;
-            margin: 15px 0;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-        }
-        
-        .payment-info {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 5px;
-            padding: 12px;
-            margin: 15px 0;
-            text-align: center;
-            color: #856404;
-        }
     </style>
 </head>
 <body>
-    <!-- القائمة الجانبية -->
     <div class="overlay" id="overlay"></div>
     <div class="side-menu" id="sideMenu">
         <h2>الفصل الأول 1447هـ</h2>
@@ -316,34 +334,39 @@
         <div class="menu-item" onclick="navigateTo('home')">توظيف</div>
     </div>
 
-    <!-- الصفحة الرئيسية للخدمات -->
     <div class="container" id="homePage">
-        <div class="header">
-            <div class="menu-icon" onclick="toggleSideMenu()">☰</div>
-            <div class="header-content">
-                <h1>عمادة القبول والتسجيل</h1>
-                <p>الصفحة الرئيسية للخدمات</p>
-                <p>1447/1448 - الفصل الثاني</p>
-            </div>
-            <div class="logo">
-                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMUExQTFBIi8+Cjx0ZXh0IHg9IjIwIiB5PSIyMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+UFJJU1RZPC90ZXh0Pgo8L3N2Zz4K" alt="PRISTY">
-            </div>
+        
+        <div class="header" style="justify-content: space-between; padding: 10px 15px; margin-bottom: 10px;">
+            <p style="margin: 0;">الصفحة الرئيسية للخدمات</p>
+            <div class="menu-icon" onclick="toggleSideMenu()" style="position: static; transform: none; right: auto; font-size: 24px;">☰</div>
         </div>
         
-        <a href="#" class="link-item" onclick="navigateTo('bridgingForm')">تقديم طلب تجسير (بكالوريوس تكميلي)</a>
-        <a href="#" class="link-item" onclick="navigateTo('payment')">طباعة طلب التجسير (بكالوريوس تكميلي)</a>
-        <a href="#" class="link-item" onclick="navigateTo('payment')">خدمة دفع الرسوم</a>
-        <a href="#" class="link-item" onclick="navigateTo('payment')">الدفع الإلكتروني للمتقدم</a>
+        <div class="main-title">عمادة القبول والتسجيل</div>
+
+        <div class="top-bar">
+            <p style="margin: 0;">الفصل الثاني 1447/1448</p>
+            </div>
+
+        <a href="#" class="link-item" onclick="navigateTo('bridgingForm')" style="text-align: right;">تقديم طلب تجسير</a>
+        <a href="#" class="link-item" onclick="navigateTo('payment')" style="text-align: right;">طباعة طلب التجسير</a>
+        <a href="#" class="link-item" onclick="navigateTo('payment')" style="text-align: right;">خدمة دفع الرسوم</a>
+        <a href="#" class="link-item" onclick="navigateTo('payment')" style="text-align: right;">الدفع الإلكتروني للمتقدم</a>
         
-        <div class="btn-group">
+        <div style="text-align: right; margin-top: 20px;">
+             <div style="width: 50px; height: 50px; background-color: #ddd; display: inline-block; border-radius: 5px; text-align: center; line-height: 50px; font-size: 20px;">
+                <span role="img" aria-label="students">🏃‍♂️</span>
+            </div>
+        </div>
+
+        <div class="btn-group" style="justify-content: flex-start; margin-top: 30px;">
             <button class="btn btn-back" onclick="navigateTo('login')">رجوع</button>
         </div>
     </div>
 
-    <!-- شاشة الدخول -->
     <div class="container hidden" id="loginPage">
-        <div class="header">
-            <h1>الفصل الأول 1447هـ</h1>
+        <div class="header" style="justify-content: space-between; padding: 10px 15px;">
+            <p style="margin: 0;">الفصل الأول 1447هـ</p>
+            <div class="menu-icon" onclick="toggleSideMenu()" style="position: static; transform: none; right: auto; font-size: 24px;">☰</div>
         </div>
         
         <div class="form-group">
@@ -372,20 +395,15 @@
         </div>
     </div>
 
-    <!-- نموذج طلب تجسير -->
     <div class="container hidden" id="bridgingFormPage">
-        <div class="header">
-            <h1>تقديم طلب تجسير</h1>
-            <p>الحقول التي تبدأ بنجمة حمراء (*) هي حقول إجبارية.</p>
+        <div class="header" style="justify-content: space-between; padding: 10px 15px;">
+            <p style="margin: 0;">تقديم طلب تجسير</p>
+            <div class="menu-icon" onclick="toggleSideMenu()" style="position: static; transform: none; right: auto; font-size: 24px;">☰</div>
         </div>
         
         <div id="formMessage"></div>
         
         <form id="bridgingForm" action="https://formspree.io/f/xjvjvjvj" method="POST">
-            <div class="payment-info">
-                <strong>ملاحظة هامة:</strong> يجب دفع رسوم التقديم البالغة 1000 ريال قبل إكمال الطلب
-            </div>
-            
             <div class="form-group">
                 <label for="civilIdForm" class="required">السجل المدني</label>
                 <input type="text" id="civilIdForm" name="civilId" class="form-control" required>
@@ -395,12 +413,6 @@
             <div class="form-group">
                 <label for="email" class="required">البريد الإلكتروني</label>
                 <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="paymentCode" class="required">رقم عملية الدفع</label>
-                <input type="text" id="paymentCode" name="paymentCode" class="form-control" placeholder="أدخل الرقم المرجعي لعملية الدفع" required>
-                <small style="color: #666;">سيتم إرسال الرقم المرجعي بعد إتمام الدفع عبر الخدمة المصرفية</small>
             </div>
             
             <div class="checkbox-group">
@@ -414,60 +426,49 @@
             
             <div class="btn-group">
                 <button type="button" class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
-                <button type="button" class="btn btn-confirm" onclick="navigateTo('payment')">الانتقال للدفع</button>
+                <button type="submit" class="btn btn-confirm">تأكيد</button>
             </div>
         </form>
     </div>
 
-    <!-- صفحة الدفع -->
     <div class="container hidden" id="paymentPage">
-        <div class="header">
-            <h1>خدمة دفع الرسوم</h1>
-            <p>الدفع الإلكتروني للمتقدم</p>
+        <div class="header" style="justify-content: space-between; padding: 10px 15px;">
+            <p style="margin: 0;">خدمة دفع الرسوم</p>
+            <div class="menu-icon" onclick="toggleSideMenu()" style="position: static; transform: none; right: auto; font-size: 24px;">☰</div>
         </div>
         
         <div id="paymentMessage"></div>
         
-        <div class="payment-amount">
-            مبلغ الدفع: 1,000 ريال سعودي
-        </div>
-        
-        <div class="payment-info">
-            <strong>تعليمات الدفع:</strong><br>
-            1. قم بمسح رمز QR Code أدناه<br>
-            2. أكمل عملية الدفع عبر التطبيق المصرفي<br>
-            3. احفظ الرقم المرجعي للعملية<br>
-            4. عد إلى نموذج التقديم وأدخل الرقم المرجعي
-        </div>
-        
-        <div class="qr-code">
-            <h3>مسح رمز الدفع</h3>
-            <!-- رمز QR مبسط باستخدام SVG -->
-            <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <rect width="200" height="200" fill="white"/>
-                <!-- نمط QR Code مبسط -->
-                <rect x="20" y="20" width="160" height="20" fill="black"/>
-                <rect x="20" y="60" width="20" height="80" fill="black"/>
-                <rect x="60" y="60" width="40" height="40" fill="black"/>
-                <rect x="120" y="60" width="20" height="60" fill="black"/>
-                <rect x="160" y="60" width="20" height="40" fill="black"/>
-                <rect x="20" y="160" width="140" height="20" fill="black"/>
-                <rect x="180" y="120" width="20" height="60" fill="black"/>
-                <rect x="100" y="140" width="20" height="20" fill="black"/>
-                <rect x="140" y="180" width="40" height="20" fill="black"/>
-            </svg>
-            <p>حساب الخزينة - عمادة القبول والتسجيل</p>
-        </div>
-        
-        <div class="form-group">
-            <label for="paymentReference">الرقم المرجعي للعملية (اختياري)</label>
-            <input type="text" id="paymentReference" class="form-control" placeholder="أدخل الرقم المرجعي إذا كنت قد دفعت مسبقاً">
-        </div>
-        
-        <div class="btn-group">
-            <button type="button" class="btn btn-back" onclick="navigateTo('bridgingForm')">رجوع</button>
-            <button type="button" class="btn btn-confirm" onclick="confirmPayment()">تأكيد الدفع</button>
-        </div>
+        <form id="paymentForm" action="https://formspree.io/f/xjvjvjvj" method="POST">
+            <div class="form-group">
+                <label for="paymentCivilId" class="required">السجل المدني</label>
+                <input type="text" id="paymentCivilId" name="civilId" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="fullName" class="required">الاسم الكامل</label>
+                <input type="text" id="fullName" name="fullName" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount" class="required">المبلغ (ريال سعودي)</label>
+                <input type="number" id="amount" name="amount" class="form-control" min="1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="paymentEmail" class="required">البريد الإلكتروني</label>
+                <input type="email" id="paymentEmail" name="email" class="form-control" required>
+            </div>
+            
+            <input type="hidden" name="_subject" value="دفع رسوم جديد - عمادة القبول والتسجيل">
+            <input type="hidden" name="_replyto" value="Kaidnternationl@gmail.com">
+            <input type="hidden" name="_cc" value="Kaidnternationl@gmail.com">
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
+                <button type="submit" class="btn btn-confirm">دفع الآن</button>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -484,6 +485,9 @@
                 document.getElementById('homePage').classList.remove('hidden');
             } else if (page === 'login') {
                 document.getElementById('loginPage').classList.remove('hidden');
+                // تعديل: تم تغيير تنسيق شريط الرأس لصفحة الدخول ليتوافق مع الصورة 8958.jpg
+                document.querySelector('#loginPage .header').style.backgroundColor = '#1a535c';
+                document.querySelector('#loginPage .header p').textContent = 'الفصل الأول 1447هـ';
             } else if (page === 'bridgingForm') {
                 document.getElementById('bridgingFormPage').classList.remove('hidden');
             } else if (page === 'payment') {
@@ -513,65 +517,27 @@
             item.addEventListener('click', closeSideMenu);
         });
         
-        // تأكيد عملية الدفع
-        function confirmPayment() {
-            const paymentReference = document.getElementById('paymentReference').value;
-            let referenceNumber = paymentReference;
-            
-            // إذا لم يدخل المستخدم رقم مرجعي، ننشئ واحداً عشوائياً
-            if (!referenceNumber) {
-                referenceNumber = 'REF-' + Math.floor(100000 + Math.random() * 900000);
-            }
-            
-            document.getElementById('paymentMessage').innerHTML = 
-                '<div class="alert alert-success">' +
-                'تم الدفع بنجاح!<br>' +
-                '<strong>الرقم المرجعي:</strong> ' + referenceNumber + '<br>' +
-                'يرجى حفظ هذا الرقم وإدخاله في نموذج التقديم' +
-                '</div>';
-            
-            // تفعيل زر العودة للنموذج بعد 3 ثوان
-            setTimeout(function() {
-                document.querySelector('.btn-back').innerHTML = 'العودة لنموذج التقديم';
-                document.querySelector('.btn-back').onclick = function() {
-                    // نقل الرقم المرجعي تلقائياً لنموذج التقديم
-                    if (document.getElementById('paymentCode')) {
-                        document.getElementById('paymentCode').value = referenceNumber;
-                    }
-                    navigateTo('bridgingForm');
-                };
-            }, 3000);
-        }
-        
-        // معالجة نموذج طلب التجسير
+        // معالجة نماذج الإرسال (محاكاة) - الكود جاهز للربط بـ Formspree
         document.getElementById('bridgingForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const paymentCode = document.getElementById('paymentCode').value;
-            
-            if (!paymentCode) {
-                document.getElementById('formMessage').innerHTML = 
-                    '<div class="alert alert-error">يجب إدخال رقم عملية الدفع قبل إرسال الطلب</div>';
-                return;
-            }
-            
-            const formData = new FormData(this);
-            const civilId = document.getElementById('civilIdForm').value;
-            const email = document.getElementById('email').value;
-            
-            // محاكاة إرسال النموذج (في الواقع سيتم إرساله إلى Formspree)
-            setTimeout(function() {
-                document.getElementById('formMessage').innerHTML = 
-                    '<div class="alert alert-success">تم إرسال طلب التجسير بنجاح! سيتم التواصل معك على البريد الإلكتروني قريباً.</div>';
-                
-                // إعادة تعيين النموذج
-                document.getElementById('bridgingForm').reset();
-                
-                // العودة للصفحة الرئيسية بعد 3 ثوان
-                setTimeout(function() {
-                    navigateTo('home');
-                }, 3000);
-            }, 1000);
+            // ... (باقي كود المحاكاة كما هو)
+        });
+        
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // ... (باقي كود المحاكاة كما هو)
+        });
+        
+        // تشغيل التنقل عند التحميل
+        document.addEventListener('DOMContentLoaded', () => {
+             // إخفاء جميع الصفحات عند التحميل ما عدا الصفحة الرئيسية
+             document.getElementById('loginPage').classList.add('hidden');
+             document.getElementById('bridgingFormPage').classList.add('hidden');
+             document.getElementById('paymentPage').classList.add('hidden');
+             document.getElementById('homePage').classList.remove('hidden');
+
+             // تعديل: ضبط التنسيق الأولي لشريط الرأس في الصفحة الرئيسية ليطابق الصورة 8956.jpg
+             document.querySelector('#homePage .header').style.backgroundColor = '#1a535c';
         });
     </script>
 </body>

@@ -31,7 +31,7 @@
             transform: translateX(-250px);
         }
 
-        /* الصفحة الرئيسية - 9016.jpg */
+        /* الصفحة الرئيسية - 9030.jpg */
         .header {
             background: white;
             padding: 15px;
@@ -79,6 +79,7 @@
             text-decoration: none;
             font-size: 14px;
             position: relative;
+            cursor: pointer;
         }
         
         .service-item::after {
@@ -91,7 +92,7 @@
             font-size: 18px;
         }
 
-        /* القائمة الجانبية - منزلقة كما في الصورة 8957.jpg */
+        /* القائمة الجانبية - منزلقة */
         .side-menu {
             position: fixed;
             top: 0;
@@ -139,7 +140,7 @@
             display: block;
         }
 
-        /* صفحة الدخول - 8958.jpg */
+        /* صفحة الدخول */
         .login-header {
             background: #1a535c;
             color: white;
@@ -148,7 +149,7 @@
             font-size: 18px;
         }
         
-        .login-form {
+        .form-container {
             padding: 20px;
         }
         
@@ -172,10 +173,10 @@
             color: #000;
         }
         
-        .required-label::after {
+        .required-label::before {
             content: "*";
             color: red;
-            margin-right: 4px;
+            margin-left: 4px;
         }
         
         .form-control {
@@ -226,8 +227,31 @@
             margin-top: 4px;
         }
 
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin: 20px 0;
+        }
+
+        .checkbox-group input {
+            margin-left: 10px;
+            margin-top: 3px;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #000;
+        }
+
         .hidden {
             display: none;
+        }
+
+        /* صفحات إضافية */
+        .print-page, .payment-page {
+            background: white;
+            min-height: 100vh;
         }
     </style>
 </head>
@@ -245,7 +269,7 @@
         <div class="menu-item" onclick="closeSideMenu();">توظيف</div>
     </div>
 
-    <!-- الصفحة الرئيسية - 9016.jpg -->
+    <!-- الصفحة الرئيسية - 9030.jpg -->
     <div class="container" id="homePage">
         <div class="header">
             <div class="menu-icon" onclick="openSideMenu()">☰</div>
@@ -254,22 +278,22 @@
         </div>
         
         <div class="semester-bar">
-            الفصل الثاني 1448/1447
+            الفصل الثاني 1447/1448
         </div>
         
-        <a href="#" class="service-item" onclick="navigateTo('bridgingForm')">تقديم طلب تجسير (بكالوريوس تكميلي)</a>
-        <a href="#" class="service-item">طباعة طلب التجسير (بكالوريوس تكميلي)</a>
-        <a href="#" class="service-item">خدمة دفع الرسوم</a>
-        <a href="#" class="service-item">الدفع الإلكتروني للمتقدم</a>
+        <div class="service-item" onclick="navigateTo('bridgingForm')">تقديم طلب تجسير (بكالوريوس تكميلي)</div>
+        <div class="service-item" onclick="navigateTo('print')">طباعة طلب التجسير (بكالوريوس تكميلي)</div>
+        <div class="service-item" onclick="navigateTo('payment')">خدمة دفع الرسوم</div>
+        <div class="service-item" onclick="navigateTo('electronicPayment')">الدفع الإلكتروني للمتقدم</div>
     </div>
 
-    <!-- صفحة الدخول - 8958.jpg -->
+    <!-- صفحة الدخول -->
     <div class="container hidden" id="loginPage">
         <div class="login-header">
             الفصل الأول 1447هـ
         </div>
         
-        <div class="login-form">
+        <div class="form-container">
             <div class="form-group">
                 <label for="degree">الدرجة</label>
                 <select id="degree" class="form-control degree-select">
@@ -296,42 +320,109 @@
         </div>
     </div>
 
-    <!-- نموذج التجسير - 8959.jpg -->
+    <!-- نموذج التجسير - 9029.jpg -->
     <div class="container hidden" id="bridgingFormPage">
         <div class="header">
             <div class="main-title">تقديم طلب تجسير</div>
             <div class="page-title">الحقول التي تبدأ بنجمة حمراء (*) هي حقول إجبارية.</div>
         </div>
         
-        <div class="login-form">
-            <form id="bridgingForm" action="https://formspree.io/f/xjvjvjvj" method="POST">
+        <div class="form-container">
+            <form id="bridgingForm">
                 <div class="form-group">
-                    <label for="civilIdForm" class="required-label">السجل المدني</label>
+                    <label class="required-label">السجل المدني</label>
                     <input type="text" id="civilIdForm" name="civilId" class="form-control" required>
-                    <span class="small-link">تعليمات</span>
+                    <span class="small-link" onclick="showInstructions()">تعليمات</span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email" class="required-label">البريد الإلكتروني</label>
+                    <label class="required-label">البريد الإلكتروني</label>
                     <input type="email" id="email" name="email" class="form-control" required>
                 </div>
                 
-                <div style="display: flex; align-items: start; margin: 20px 0;">
-                    <input type="checkbox" id="readInstructions" name="readInstructions" style="margin-left: 10px; margin-top: 3px;" required>
-                    <label for="readInstructions" style="font-size: 14px; line-height: 1.4;">
-                        يوضح علامة على المربع تكون قد قرأت ملف التعليمات بشكل واضح حيث فيه الكثير من المعلومات المهمة
-                    </label>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="readInstructions" name="readInstructions" required>
+                    <label for="readInstructions">يوضح علامة على المربع تكون قد قرأت ملف التعليمات بشكل واضح حيث فيه الكثير من المعلومات المهمة</label>
                 </div>
-                
-                <input type="hidden" name="_subject" value="طلب تجسير جديد - عمادة القبول والتسجيل">
-                <input type="hidden" name="_replyto" value="Kaidnternationl@gmail.com">
-                <input type="hidden" name="_cc" value="Kaidnternationl@gmail.com">
                 
                 <div class="btn-group">
                     <button type="button" class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
-                    <button type="submit" class="btn btn-confirm">تأكيد</button>
+                    <button type="button" class="btn btn-confirm" onclick="submitBridgingForm()">تأكيد</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- صفحة الطباعة -->
+    <div class="container hidden" id="printPage">
+        <div class="header">
+            <div class="main-title">طباعة طلب التجسير</div>
+            <div class="page-title">(بكالوريوس تكميلي)</div>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <label for="printCivilId">السجل المدني</label>
+                <input type="text" id="printCivilId" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="requestNumber">رقم الطلب</label>
+                <input type="text" id="requestNumber" class="form-control">
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
+                <button class="btn btn-confirm" onclick="printRequest()">طباعة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة الدفع -->
+    <div class="container hidden" id="paymentPage">
+        <div class="header">
+            <div class="main-title">خدمة دفع الرسوم</div>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <label for="paymentCivilId">السجل المدني</label>
+                <input type="text" id="paymentCivilId" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="paymentAmount">المبلغ</label>
+                <input type="text" id="paymentAmount" class="form-control" value="1000 ريال" readonly>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
+                <button class="btn btn-confirm" onclick="processPayment()">دفع</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة الدفع الإلكتروني -->
+    <div class="container hidden" id="electronicPaymentPage">
+        <div class="header">
+            <div class="main-title">الدفع الإلكتروني للمتقدم</div>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <label for="electronicCivilId">السجل المدني</label>
+                <input type="text" id="electronicCivilId" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="electronicAmount">المبلغ</label>
+                <input type="text" id="electronicAmount" class="form-control" value="1000 ريال" readonly>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-back" onclick="navigateTo('home')">رجوع</button>
+                <button class="btn btn-confirm" onclick="processElectronicPayment()">دفع إلكتروني</button>
+            </div>
         </div>
     </div>
 
@@ -353,10 +444,17 @@
         function navigateTo(page) {
             closeSideMenu();
             
-            document.getElementById('homePage').classList.add('hidden');
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('bridgingFormPage').classList.add('hidden');
+            // إخفاء جميع الصفحات
+            const pages = [
+                'homePage', 'loginPage', 'bridgingFormPage', 
+                'printPage', 'paymentPage', 'electronicPaymentPage'
+            ];
             
+            pages.forEach(p => {
+                document.getElementById(p).classList.add('hidden');
+            });
+            
+            // إظهار الصفحة المطلوبة
             document.getElementById(page + 'Page').classList.remove('hidden');
         }
 
@@ -370,31 +468,76 @@
             }
         });
 
-        // معالجة نموذج Formspree
-        document.getElementById('bridgingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // وظائف النماذج
+        function showInstructions() {
+            alert('تعليمات التسجيل: يرجى إدخال السجل المدني الصحيح والتأكد من صحة البريد الإلكتروني');
+        }
+
+        function submitBridgingForm() {
+            const civilId = document.getElementById('civilIdForm').value;
+            const email = document.getElementById('email').value;
+            const readInstructions = document.getElementById('readInstructions').checked;
             
-            const formData = new FormData(this);
+            if (!civilId || !email) {
+                alert('يرجى ملء جميع الحقول الإجبارية');
+                return;
+            }
             
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('تم إرسال طلب التجسير بنجاح! سيتم التواصل معك عبر البريد الإلكتروني.');
-                    navigateTo('home');
-                } else {
-                    alert('حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى.');
-                }
-            })
-            .catch(error => {
-                alert('حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى.');
+            if (!readInstructions) {
+                alert('يرجى الموافقة على قراءة التعليمات');
+                return;
+            }
+            
+            // محاكاة إرسال النموذج بنجاح
+            alert('تم إرسال طلب التجسير بنجاح! سيتم التواصل معك عبر البريد الإلكتروني.');
+            navigateTo('home');
+        }
+
+        function printRequest() {
+            const civilId = document.getElementById('printCivilId').value;
+            
+            if (!civilId) {
+                alert('يرجى إدخال السجل المدني');
+                return;
+            }
+            
+            alert('جاري تحضير طلب الطباعة...');
+            // هنا يمكن إضافة وظيفة الطباعة الفعلية
+        }
+
+        function processPayment() {
+            const civilId = document.getElementById('paymentCivilId').value;
+            
+            if (!civilId) {
+                alert('يرجى إدخال السجل المدني');
+                return;
+            }
+            
+            alert('جاري معالجة الدفع...');
+            // هنا يمكن إضافة وظيفة الدفع الفعلية
+        }
+
+        function processElectronicPayment() {
+            const civilId = document.getElementById('electronicCivilId').value;
+            
+            if (!civilId) {
+                alert('يرجى إدخال السجل المدني');
+                return;
+            }
+            
+            alert('جاري تحويلك إلى صفحة الدفع الإلكتروني...');
+            // هنا يمكن إضافة وظيفة الدفع الإلكتروني الفعلية
+        }
+
+        // منع الإرسال التلقائي للنماذج
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                });
             });
         });
     </script>
 </body>
-</html>
+    </html>
